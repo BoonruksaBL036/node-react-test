@@ -6,14 +6,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-let messages = [];
+let messages = []; // [{id: 1, text: "Hello"}]
 
-// GET /api/hello ดึงข้อความทั้งหมด
+// GET /api/hello → ดึงข้อความทั้งหมด
 app.get("/api/hello", (req, res) => {
   res.json(messages);
 });
 
-// POST /api/hello เพิ่มข้อความ
+// POST /api/hello → เพิ่มข้อความ
 app.post("/api/hello", (req, res) => {
   const { text } = req.body;
   if (!text) return res.status(400).json({ error: "Message is required" });
@@ -22,7 +22,7 @@ app.post("/api/hello", (req, res) => {
   res.json(newMessage);
 });
 
-// PUT /api/hello/:id แก้ข้อความ
+// PUT /api/hello/:id → แก้ข้อความ
 app.put("/api/hello/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const { text } = req.body;
@@ -32,7 +32,7 @@ app.put("/api/hello/:id", (req, res) => {
   res.json(msg);
 });
 
-// DELETE /api/hello/:id ลบข้อความ
+// DELETE /api/hello/:id → ลบข้อความ
 app.delete("/api/hello/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const index = messages.findIndex((m) => m.id === id);
