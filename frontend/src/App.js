@@ -3,6 +3,8 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+console.log("API_URL:", API_URL);
+
 function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -11,7 +13,15 @@ function App() {
   const fetchMessages = () => {
     axios
       .get(`${API_URL}/api/hello`)
-      .then((res) => setMessages(res.data))
+      .then((res) => {
+        if (Array.isArray(res.data)) {
+          setMessages(res.data);
+        } else if (Array.isArray(res.data.data)) {
+          setMessages(res.data.data);
+        } else {
+          setMessages([]);
+        }
+      })
       .catch((err) => console.error(err));
   };
 
