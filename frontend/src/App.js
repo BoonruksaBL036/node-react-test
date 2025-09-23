@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -8,7 +10,7 @@ function App() {
 
   const fetchMessages = () => {
     axios
-      .get("/api/hello")
+      .get(`${API_URL}/api/hello`)
       .then((res) => setMessages(res.data))
       .catch((err) => console.error(err));
   };
@@ -21,13 +23,15 @@ function App() {
     if (!input) return;
 
     if (editingId) {
-      axios.put(`/api/hello/${editingId}`, { text: input }).then(() => {
-        setInput("");
-        setEditingId(null);
-        fetchMessages();
-      });
+      axios
+        .put(`${API_URL}/api/hello/${editingId}`, { text: input })
+        .then(() => {
+          setInput("");
+          setEditingId(null);
+          fetchMessages();
+        });
     } else {
-      axios.post("/api/hello", { text: input }).then(() => {
+      axios.post(`${API_URL}/api/hello`, { text: input }).then(() => {
         setInput("");
         fetchMessages();
       });
@@ -35,7 +39,7 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    axios.delete(`/api/hello/${id}`).then(() => fetchMessages());
+    axios.delete(`${API_URL}/api/hello/${id}`).then(() => fetchMessages());
   };
 
   const handleEdit = (msg) => {
